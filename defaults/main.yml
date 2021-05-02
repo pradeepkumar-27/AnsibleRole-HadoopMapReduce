@@ -1,0 +1,3 @@
+---
+# defaults file for HadoopMR
+mr_port: 7002

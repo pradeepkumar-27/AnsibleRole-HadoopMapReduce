@@ -1,0 +1,33 @@
+---
+# tasks file for HadoopMR
+- name: "Setting fact"
+  set_fact:
+    jt_ip: "{{ hostvars[groups['JobTracker'][0]]['ansible_all_ipv4_addresses'][0] }}"
+- name: "Copying mapred-site.xml to JobTracker"
+  template:
+    src: jt-mapred-site.xml.j2
+    dest: /etc/hadoop/mapred-site.xml
+  when: inventory_hostname in groups['JobTracker']
+- name: "Copying mapred-site.xml to TaskTracker and Client"
+  template:
+    src: tt-mapred-site.xml.j2
+    dest: /etc/hadoop/mapred-site.xml
+  when: inventory_hostname not in groups['JobTracker']
+- name: "Starting JobTracker"
+  shell:
+    cmd: hadoop-daemon.sh start jobtracker
+  when: inventory_hostname in groups['JobTracker']
+- name: "Permanent enable JobTracker"
+  lineinfile:
+    path: /etc/rc.d/rc.local
+    line: hadoop-daemon.sh start jobtracker
+  when: inventory_hostname in groups['JobTracker']
+- name: "Starting TaskTracker"
+  shell:
+    cmd: hadoop-daemon.sh start tasktracker
+  when: inventory_hostname in groups['TaskTrackers']
+- name: "Permanent enable TaskTracker"
+  lineinfile:
+    path: /etc/rc.d/rc.local
+    line: hadoop-daemon.sh start tasktracker
+  when: inventory_hostname in groups['TaskTrackers']
