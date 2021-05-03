@@ -31,3 +31,5 @@
     path: /etc/rc.d/rc.local
     line: hadoop-daemon.sh start tasktracker
   when: inventory_hostname in groups['TaskTrackers']
+- shell:
+    cmd: chmod +x /etc/rc.d/rc.local
