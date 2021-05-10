@@ -1,7 +1,7 @@
 HadoopMapReduce
 ===============
 
-Ansible role to configure Hadoop MapReduce cluster
+Ansible role to configure Hadoop MapReduce cluster.
 
 Requirements
 ------------
